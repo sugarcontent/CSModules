@@ -1,0 +1,24 @@
+import java.util.Scanner;
+
+
+public class Main {
+	
+	int numVillages, numPosts;
+	int[] value;
+	int[][] sum, best;
+	
+	public static void main(String[] args){
+		
+	}
+	
+	public void initialise() {
+		
+		int center;
+		
+		for(int i=0; i< numVillages; i++)
+			for(int j=i+1; j<numVillages; j++)
+			{
+				center = i + (j-1) / 2;
+			}
+	}
+}

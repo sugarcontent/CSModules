@@ -1,0 +1,64 @@
+import java.util.Scanner;
+
+
+public class Main {
+	
+	public static int N, M;
+	public static int[] value;
+	public static int[][] sum, best;
+	
+	public static void main(String[] args){
+		
+		Scanner sc = new Scanner(System.in);
+		
+		N = sc.nextInt();
+		M = sc.nextInt();
+		
+		value = new int[N];
+		
+		for(int i=0; i<N; i++)
+			value[i] = sc.nextInt();
+		
+		initialise();
+		System.out.println(count(N-1, M-1));
+		
+	}
+	
+	public static void initialise() {
+		int i, j, k, center;
+		memset(sum, 0, sizeof(sum));
+		memset(best, 0, sizeof(best));
+		for(i = 0; i < N; i++)
+			for(j = i + 1; j < N; j++)
+			{
+				center = i + (j - i) / 2;
+
+				for(k = i; k <= j; k++)
+					if(k >= center)sum[i][j] += value[k] - value[center];
+					else sum[i][j] += value[center] - value[k];
+			}
+		for(i = 0; i < N; i++)best[i][0] = sum[0][i];
+	}
+	
+	public static int count(int end, int post) {
+		
+		if(post == 0)
+			return sum[0][end];
+		
+		if(best[end][post] != 0)
+			return best[end][post];
+		
+		int min = Integer.MAX_VALUE, temp;
+		
+		for(int i=end-1; i >= post - 1; i--) {
+			temp = count(i, post - 1) + sum[i+1][end];
+			
+			if(temp<min)
+				min = temp;
+			
+		}
+		best[end][post] = min;
+		
+		return min;
+	}
+}

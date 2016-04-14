@@ -1,0 +1,40 @@
+import java.util.Scanner;
+
+
+public class Main {
+	
+	int numVillages, numPosts;
+	int[] value;
+	int[][] sum, best;
+	
+	public static void main(String[] args){
+		
+	}
+	
+	public void initialise() {
+		
+		int center;
+		
+		for(int i=0; i< numVillages; i++)
+			for(int j=i+1; j<numVillages; j++)
+			{
+				center = i + (j-1) / 2;
+				
+				for(int k=i; k <=j; k++) {
+					if(k >= center)
+						sum[i][j] += value[k] - value[center];
+					else
+						sum[i][j] += value[center] - value[k];
+				}
+			}
+		
+		for (int i=0; i<numVillages; i++)
+			best[i][0] = sum[0][i];	
+	}
+	
+	int count(int end, int post) {
+		
+		if(post == 0)
+			return sum[0][end];
+	}
+}
