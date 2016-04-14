@@ -1,3 +1,6 @@
 # CSModules
 
-This is a storage folder for my work since Y2S2
+#H1 Introduction
+Hello juniors! This repo contains most of the lab assignments from the modules I have taken from Year 2 Semester 2 onwards.
+
+
