@@ -13,9 +13,20 @@
 #endif
 
 using namespace std;
-
+float velocity = -1;
+float angle = 0;
 // You may add more functions here if you like
 // ========================================================================
+
+void idle()
+{
+	angle += velocity;
+	
+	if (angle < -360.0)
+		angle = 0;
+
+	glutPostRedisplay();
+}
 void drawBaseWall()
 {
 	glBegin(GL_QUADS);
@@ -26,10 +37,10 @@ void drawBaseWall()
 	glEnd();
 
 	glBegin(GL_QUADS);
-	glTexCoord2d(-2.5, 0.0); glVertex3f(-2.5, 0, 0);
-	glTexCoord2d(2.5, 0.0); glVertex3f(2.5, 0, 0);
-	glTexCoord2d(2.5, 0.0); glVertex3f(2.5, 2.5, 0);
-	glTexCoord2d(-2.5, 0.0); glVertex3f(-2.5, 2.5, 0);
+	glTexCoord2d(-2.5, 0.0); glVertex3f(-2.5, 0, -0.001);
+	glTexCoord2d(2.5, 0.0); glVertex3f(2.5, 0, -0.001);
+	glTexCoord2d(2.5, 0.0); glVertex3f(2.5, 2.5, -0.001);
+	glTexCoord2d(-2.5, 0.0); glVertex3f(-2.5, 2.5, -0.001);
 	glEnd();
 
 	glBegin(GL_QUADS);
@@ -303,18 +314,6 @@ void draw2ndPillars()
 	float ht = 9.5;
 
 	glPushMatrix();
-	glTranslatef(-wth, 0, -0.5);
-	glRotatef(-90, 1, 0, 0);
-	drawCylinder(0.2, ht);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(wth, 0, -0.5);
-	glRotatef(-90, 1, 0, 0);
-	drawCylinder(0.2, ht);
-	glPopMatrix();
-
-	glPushMatrix();
 	glTranslatef(wth, 0, -3.5);
 	glRotatef(-90, 1, 0 , 0);
 	drawCylinder(0.2, ht);
@@ -339,52 +338,53 @@ void draw2ndPillars()
 	glPopMatrix();
 }
 
-void drawRoof(double r, double h)
-{
 
-	int n = 30;
-
-	glPushMatrix();
-	glTranslatef(0, 10, -2);
-	glRotatef(-90, 1, 0, 0);
-
-	for (int i = 0; i < n; i++) {
-		glNormal3d(sin(2.0*M_PI*(i + 0.5) / 30.0), cos(2.0*M_PI*(i + 0.5) / 30.0), h / 2);
-		glBegin(GL_POLYGON);
-		glTexCoord2d(1, 0);
-		glVertex3f(r*sin(2.0*M_PI*i / 30.0), r*cos(2.0*M_PI*i / 30.0), 0);
-		glTexCoord2d(0, 1);
-		glVertex3f(r*sin(2.0*M_PI*(i + 1) / 30.0), r*cos(2.0*M_PI*(i + 1) / 30.0), 0);
-		glVertex3f(0, 0, h);
-		glEnd();
-	}
-	glPopMatrix();
-}
 
 void drawWindmillBlade()
-{
+{	
+	int wth = -1;
+
 	glBegin(GL_POLYGON);
 	
-	glTexCoord2d(0, -0.5);
-	glVertex3f(0, -0.5, 0.1);
+	glTexCoord2d(wth, -0.5);
+	glVertex3f(wth, -0.5, 0.0);
 
-	glTexCoord2d(0, 0.5);
-	glVertex3f(0, 0.5, 0.1);
+	glTexCoord2d(wth, 0.5);
+	glVertex3f(wth, 0.5, 0.0);
 
-	glTexCoord2d(-5, 1);
-	glVertex3f(-5, 1, 0.1);
+	glTexCoord2d(wth-4, 1);
+	glVertex3f(wth-3, 1, 0.0);
 
-	glTexCoord2d(-5, -1);
-	glVertex3f(-5, -1, 0.1);
+	glTexCoord2d(wth-4, -1);
+	glVertex3f(wth-3, -1, 0.0);
 
 	glEnd();
 }
 
-void drawMailCtr(double r)
+void drawPath()
+{
+	glBegin(GL_POLYGON);
+	
+	glTexCoord2d(-0.51, 0.0001);
+	glVertex3f(-0.51, 0.001, 0.001);
+
+	glTexCoord2d(0.51, 0.0001);
+	glVertex3f(0.51, 0.001, 0.001);
+
+	glTexCoord2d(0.51, 4.999);
+	glVertex3f(0.51, 0.001, 4.999);
+
+	glTexCoord2d(-0.51, 4.999);
+	glVertex3f(-0.51, 0.001, 4.999);
+
+	glEnd();
+}
+
+void drawMillCtr(double r)
 {
 	int n = 20;
 	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < 2 * n; j++) {
+		for (int j = 0; j < n; j++) {
 			glBegin(GL_POLYGON);
 			// Explanation: the normal of the whole polygon is the coordinate of the center of the polygon for a sphere
 			glNormal3d(sin((i + 0.5)*M_PI / n)*cos((j + 0.5)*M_PI / n), cos((i + 0.5)*M_PI / n)*cos((j + 0.5)*M_PI / n), sin((j + 0.5)*M_PI / n));
@@ -402,8 +402,85 @@ void drawMailCtr(double r)
 			glVertex3d(r*sin(i*M_PI / n)*cos((j + 1)*M_PI / n), r*cos(i*M_PI / n)*cos((j + 1)*M_PI / n), r*sin((j + 1)*M_PI / n));
 			glEnd();
 		}
+	}
 }
 
+void drawRoof()
+{
+	glPushMatrix();
+
+	glTranslatef(0, 9.5, -2);
+	glRotatef(-90, 1, 0, 0);
+
+	drawMillCtr(1.605);
+	glPopMatrix();
+}
+
+void drawMillParts()
+{	
+	float ht = 8;
+	float rad = 0.5;
+
+	glPushMatrix();
+	glTranslatef(0, ht, -0.49999);
+
+	drawMillCtr(rad);
+
+	glPopMatrix();
+}
+
+void drawDoor()
+{
+	glBegin(GL_POLYGON);
+	glTexCoord2d(0, 0);
+	glVertex3f(-1.01, 0.0001, 0.0001);
+
+	glTexCoord2d(0, 1);
+	glVertex3f(-1.01, 2.0001, 0.0001);
+
+	glTexCoord2d(1, 1);
+	glVertex3f(1.01, 2.0001, 0.0001);
+
+	glTexCoord2d(1, 0);
+	glVertex3f(1.01, 0.0001, 0.0001);
+
+	glEnd();
+}
+
+void drawConnector()
+{
+	glBegin(GL_POLYGON);
+	
+	glTexCoord2d(0, 0);
+	glVertex3f(-0.5, -0.1, -0.0001);
+
+	glTexCoord2d(0, 1);
+	glVertex3f(-0.5, 0.1, -0.0001);
+
+	glTexCoord2d(0, 0);
+	glVertex3f(-1.1, 0.1, -0.0001);
+
+	glTexCoord2d(0, 0);
+	glVertex3f(-1.1, -0.1, -0.0001);
+	glEnd();
+}
+
+void drawBlades()
+{
+	float ht = 8;
+
+	glPushMatrix();
+
+	glTranslatef(0, ht, -0.4);
+	glRotatef(angle, 0, 0, 1);
+	for (int i = 0; i < 4; i++)
+	{
+		drawWindmillBlade();
+		drawConnector();
+		glRotatef(90, 0, 0, 1);
+	}
+
+	glPopMatrix();
 }
 // ========================================================================
 
@@ -422,13 +499,14 @@ void drawMyHouse(GLuint texSet[])
 	draw1stFloor();
 	draw2ndFloor();
 	draw3rdFloor();
-
-	glBindTexture(GL_TEXTURE_2D, texSet[19]);
-	drawMailCtr(1);
+	drawRoof();
 	
-	glBindTexture(GL_TEXTURE_2D, texSet[16]);
-	drawRoof(2.2, 1.5);
+	glBindTexture(GL_TEXTURE_2D, texSet[19]);
+	drawMillParts();
 
+	glBindTexture(GL_TEXTURE_2D, texSet[44]);
+	drawBlades();
+	
 	glBindTexture(GL_TEXTURE_2D, texSet[11]);
 	draw1stPillars();
 	draw2ndPillars();
@@ -436,6 +514,12 @@ void drawMyHouse(GLuint texSet[])
 	glBindTexture(GL_TEXTURE_2D, texSet[42]);
 
 	drawGrass();
+
+	glBindTexture(GL_TEXTURE_2D, texSet[8]);
+	drawPath();
+
+	glBindTexture(GL_TEXTURE_2D, texSet[5]);
+	drawDoor();
 
 	glDisable(GL_TEXTURE_2D);
 	// =========================================
@@ -770,6 +854,7 @@ int main(int argc, char **argv)
 	init();
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
+	glutIdleFunc(idle);
 	glutMouseFunc(mouse);
 	glutMotionFunc(mouseMotion);
 	glutKeyboardFunc(keyboard);
