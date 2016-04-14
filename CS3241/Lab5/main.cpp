@@ -176,49 +176,167 @@ void draw1stPillars()
 }
 
 void draw2ndFloor() {
+	float wth = 1.5;
+	float ht = 9.5;
 
 	glBegin(GL_QUADS);
-	glTexCoord2d(-2, -3.5); glVertex3f(-2, 2.5, -3.5);
-	glTexCoord2d(2, -3.5); glVertex3f(2, 2.5, -3.5);
-	glTexCoord2d(2, -3.5); glVertex3f(2, 5, -3.5);
-	glTexCoord2d(-2, -3.5); glVertex3f(-2, 5, -3.5);
+	glTexCoord2d(0, 0); glVertex3f(-wth, 2.5, -3.5);
+	glTexCoord2d(1, 1); glVertex3f(wth, 2.5, -3.5);
+	glTexCoord2d(1, 0); glVertex3f(wth, ht, -3.5);
+	glTexCoord2d(0, 1); glVertex3f(-wth, ht, -3.5);
 	glEnd();
 
 	glBegin(GL_QUADS);
-	glTexCoord2d(-2, -0.5); glVertex3f(-2, 2.5, -0.5);
-	glTexCoord2d(2, -0.5); glVertex3f(2, 2.5, -0.5);
-	glTexCoord2d(2, -0.5); glVertex3f(2, 5, -0.5);
-	glTexCoord2d(-2, -0.5); glVertex3f(-2, 5, -0.5);
+	glTexCoord2d(0, 0); glVertex3f(-wth, 2.5, -0.5);
+	glTexCoord2d(1, 1);  glVertex3f(wth, 2.5, -0.5);
+	glTexCoord2d(1, 0); glVertex3f(wth, ht, -0.5);
+	glTexCoord2d(0, 1); glVertex3f(-wth, ht, -0.5);
 	glEnd();
 
 	glBegin(GL_QUADS);
-	glTexCoord2d(2, -0.5); glVertex3f(2, 2.5, -0.5);
-	glTexCoord2d(3, -2.0); glVertex3f(3, 2.5, -2.0);
-	glTexCoord2d(3, -2.0); glVertex3f(3, 5, -2.0);
-	glTexCoord2d(2, -0.5); glVertex3f(2, 5, -0.5);
+	 glTexCoord2d(1, 0); glVertex3f(wth, 2.5, -0.5);
+	 glTexCoord2d(1, 1); glVertex3f(wth + 1, 2.5, -2.0);
+	 glTexCoord2d(0, 1); glVertex3f(wth + 1, ht, -2.0);
+	 glTexCoord2d(0, 0); glVertex3f(wth, ht, -0.5);
 	glEnd();
 
 	glBegin(GL_QUADS);
-	glTexCoord2d(3, -2.0); glVertex3f(3, 2.5, -2.0);
-	glTexCoord2d(3, -2.0); glVertex3f(3, 5, -2.0);
-	glTexCoord2d(2, -3.5); glVertex3f(2, 5, -3.5);
-	glTexCoord2d(2, -3.5); glVertex3f(2, 2.5, -3.5);
+	glTexCoord2d(1, 0); glVertex3f(wth + 1, 2.5, -2.0);
+	 glTexCoord2d(0, 1); glVertex3f(wth + 1, ht, -2.0);
+	glTexCoord2d(0, 0); glVertex3f(wth, ht, -3.5);
+	glTexCoord2d(1, 1);  glVertex3f(wth, 2.5, -3.5);
 	glEnd();
 
 
 	glBegin(GL_QUADS);
-	glTexCoord2d(-3, -2.0); glVertex3f(-3, 2.5, -2.0);
-	glTexCoord2d(-3, -2.0); glVertex3f(-3, 5, -2.0);
-	glTexCoord2d(-2, -3.5); glVertex3f(-2, 5, -3.5);
-	glTexCoord2d(-2, -3.5); glVertex3f(-2, 2.5, -3.5);
+	 glTexCoord2d(1, 0);  glVertex3f(-(wth + 1), 2.5, -2.0);
+	  glTexCoord2d(0, 1); glVertex3f(-(wth + 1), ht, -2.0);
+	 glTexCoord2d(0, 0); glVertex3f(-wth, ht, -3.5);
+	 glTexCoord2d(1, 1); glVertex3f(-wth, 2.5, -3.5);
 	glEnd();
 	
 	glBegin(GL_QUADS);
-	glTexCoord2d(-3, -2.0); glVertex3f(-2.5, 2.5, -2.0);
-	glTexCoord2d(-3, -2.0); glVertex3f(-3, 5, -2.0);
-	glTexCoord2d(-2, -3.5); glVertex3f(-2, 5, -3.5);
-	glTexCoord2d(-2, -3.5); glVertex3f(-2, 2.5, -3.5);
+	 glTexCoord2d(1, 1); glVertex3f(-(wth + 1), 2.5, -2.0);
+	 glTexCoord2d(0, 0); glVertex3f(-wth, 2.5, -0.5);
+	 glTexCoord2d(0, 1);  glVertex3f(-wth, ht, -0.5);
+	glTexCoord2d(1, 0); glVertex3f(-(wth + 1), ht, -2.0);
 	glEnd();
+
+	glBegin(GL_POLYGON);
+
+	glTexCoord2d(-2.5, 0);
+	glVertex3f(-wth, 9.501, -0.5);
+
+	glTexCoord2d(-3.5, -2);
+	glVertex3f(-(wth+1), 9.501, -2);
+
+	glTexCoord2d(-2.5, -4);
+	glVertex3f(-wth, 9.501, -3.5);
+
+	glTexCoord2d(2.5, -4);
+	glVertex3f(wth, 9.501, -3.5);
+
+	glTexCoord2d(3.5, -2);
+	glVertex3f(wth+1, 9.501, -2);
+
+	glTexCoord2d(2.5, 0);
+	glVertex3f(wth, 9.501, -0.5);
+
+	glEnd();
+
+}
+
+void draw3rdFloor() {
+	float wth = 1.25;
+	float prevHt = 9.501;
+	float ht = prevHt + 0.5;
+	
+
+	glBegin(GL_QUADS);
+	glTexCoord2d(0, 0); glVertex3f(-wth, prevHt, -3.5);
+	glTexCoord2d(1, 1); glVertex3f(wth, prevHt, -3.5);
+	glTexCoord2d(1, 0); glVertex3f(wth, ht, -3.5);
+	glTexCoord2d(0, 1); glVertex3f(-wth, ht, -3.5);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glTexCoord2d(0, 0); glVertex3f(-wth, prevHt, -0.5);
+	glTexCoord2d(1, 1);  glVertex3f(wth, prevHt, -0.5);
+	glTexCoord2d(1, 0); glVertex3f(wth, ht, -0.5);
+	glTexCoord2d(0, 1); glVertex3f(-wth, ht, -0.5);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glTexCoord2d(1, 0); glVertex3f(wth, prevHt, -0.5);
+	glTexCoord2d(1, 1); glVertex3f(wth + 1, prevHt, -2.0);
+	glTexCoord2d(0, 1); glVertex3f(wth + 1, ht, -2.0);
+	glTexCoord2d(0, 0); glVertex3f(wth, ht, -0.5);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glTexCoord2d(1, 0); glVertex3f(wth + 1, prevHt, -2.0);
+	glTexCoord2d(0, 1); glVertex3f(wth + 1, ht, -2.0);
+	glTexCoord2d(0, 0); glVertex3f(wth, ht, -3.5);
+	glTexCoord2d(1, 1);  glVertex3f(wth, prevHt, -3.5);
+	glEnd();
+
+
+	glBegin(GL_QUADS);
+	glTexCoord2d(1, 0);  glVertex3f(-(wth + 1), prevHt, - 2.0);
+	glTexCoord2d(0, 1); glVertex3f(-(wth + 1), ht, -2.0);
+	glTexCoord2d(0, 0); glVertex3f(-wth, ht, -3.5);
+	glTexCoord2d(1, 1); glVertex3f(-wth, prevHt, -3.5);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glTexCoord2d(1, 1); glVertex3f(-(wth + 1), prevHt, -2.0);
+	glTexCoord2d(0, 0); glVertex3f(-wth, prevHt, -0.5);
+	glTexCoord2d(0, 1);  glVertex3f(-wth, ht, -0.5);
+	glTexCoord2d(1, 0); glVertex3f(-(wth + 1), ht, -2.0);
+	glEnd();
+
+}
+
+void draw2ndPillars()
+{
+	float wth = 1.5;
+	float ht = 9.5;
+
+	glPushMatrix();
+	glTranslatef(-wth, 0, -0.5);
+	glRotatef(-90, 1, 0, 0);
+	drawCylinder(0.2, ht);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(wth, 0, -0.5);
+	glRotatef(-90, 1, 0, 0);
+	drawCylinder(0.2, ht);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(wth, 0, -3.5);
+	glRotatef(-90, 1, 0 , 0);
+	drawCylinder(0.2, ht);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-wth, 0, -3.5);
+	glRotatef(-90, 1, 0, 0);
+	drawCylinder(0.2, ht);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(wth + 1, 0, -2);
+	glRotatef(-90, 1, 0, 0);
+	drawCylinder(0.2, ht);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-(wth + 1), 0, -2);
+	glRotatef(-90, 1, 0, 0);
+	drawCylinder(0.2, ht);
+	glPopMatrix();
 }
 // ========================================================================
 
@@ -235,14 +353,17 @@ void drawMyHouse(GLuint texSet[])
 
 	drawBaseWall();
 	draw1stFloor();
+	draw3rdFloor();
 
 	glBindTexture(GL_TEXTURE_2D, texSet[16]);
 
 	draw2ndFloor();
 
+
 	glBindTexture(GL_TEXTURE_2D, texSet[16]);
 
 	draw1stPillars();
+	draw2ndPillars();
 
 	glBindTexture(GL_TEXTURE_2D, texSet[42]);
 
