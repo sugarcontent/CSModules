@@ -5,7 +5,7 @@ Hello juniors! This repo contains most of the lab assignments from the modules I
 
 ##Guidelines
 
--Do not reuse the code without understanding them. It will harm you in the long run.
--Be mindful that NUS does not tolerate any forms of plagarism, so use this repo wisely.
+- Do not reuse the code without understanding them. It will harm you in the long run.
+- Be mindful that NUS does not tolerate any forms of plagarism, so use this repo wisely.
 
 
