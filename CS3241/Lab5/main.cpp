@@ -338,6 +338,73 @@ void draw2ndPillars()
 	drawCylinder(0.2, ht);
 	glPopMatrix();
 }
+
+void drawRoof(double r, double h)
+{
+
+	int n = 30;
+
+	glPushMatrix();
+	glTranslatef(0, 10, -2);
+	glRotatef(-90, 1, 0, 0);
+
+	for (int i = 0; i < n; i++) {
+		glNormal3d(sin(2.0*M_PI*(i + 0.5) / 30.0), cos(2.0*M_PI*(i + 0.5) / 30.0), h / 2);
+		glBegin(GL_POLYGON);
+		glTexCoord2d(1, 0);
+		glVertex3f(r*sin(2.0*M_PI*i / 30.0), r*cos(2.0*M_PI*i / 30.0), 0);
+		glTexCoord2d(0, 1);
+		glVertex3f(r*sin(2.0*M_PI*(i + 1) / 30.0), r*cos(2.0*M_PI*(i + 1) / 30.0), 0);
+		glVertex3f(0, 0, h);
+		glEnd();
+	}
+	glPopMatrix();
+}
+
+void drawWindmillBlade()
+{
+	glBegin(GL_POLYGON);
+	
+	glTexCoord2d(0, -0.5);
+	glVertex3f(0, -0.5, 0.1);
+
+	glTexCoord2d(0, 0.5);
+	glVertex3f(0, 0.5, 0.1);
+
+	glTexCoord2d(-5, 1);
+	glVertex3f(-5, 1, 0.1);
+
+	glTexCoord2d(-5, -1);
+	glVertex3f(-5, -1, 0.1);
+
+	glEnd();
+}
+
+void drawMailCtr(double r)
+{
+	int n = 20;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < 2 * n; j++) {
+			glBegin(GL_POLYGON);
+			// Explanation: the normal of the whole polygon is the coordinate of the center of the polygon for a sphere
+			glNormal3d(sin((i + 0.5)*M_PI / n)*cos((j + 0.5)*M_PI / n), cos((i + 0.5)*M_PI / n)*cos((j + 0.5)*M_PI / n), sin((j + 0.5)*M_PI / n));
+
+			glTexCoord3d(r*sin(i*M_PI / n)*cos(j*M_PI / n), r*cos(i*M_PI / n)*cos(j*M_PI / n), r*sin(j*M_PI / n));
+			glVertex3d(r*sin(i*M_PI / n)*cos(j*M_PI / n), r*cos(i*M_PI / n)*cos(j*M_PI / n), r*sin(j*M_PI / n));
+
+			glTexCoord3d(r*sin((i + 1)*M_PI / n)*cos(j*M_PI / n), r*cos((i + 1)*M_PI / n)*cos(j*M_PI / n), r*sin(j*M_PI / n));
+			glVertex3d(r*sin((i + 1)*M_PI / n)*cos(j*M_PI / n), r*cos((i + 1)*M_PI / n)*cos(j*M_PI / n), r*sin(j*M_PI / n));
+
+			glTexCoord3d(r*sin((i + 1)*M_PI / n)*cos((j + 1)*M_PI / n), r*cos((i + 1)*M_PI / n)*cos((j + 1)*M_PI / n), r*sin((j + 1)*M_PI / n));
+			glVertex3d(r*sin((i + 1)*M_PI / n)*cos((j + 1)*M_PI / n), r*cos((i + 1)*M_PI / n)*cos((j + 1)*M_PI / n), r*sin((j + 1)*M_PI / n));
+
+			glTexCoord3d(r*sin(i*M_PI / n)*cos((j + 1)*M_PI / n), r*cos(i*M_PI / n)*cos((j + 1)*M_PI / n), r*sin((j + 1)*M_PI / n));
+			glVertex3d(r*sin(i*M_PI / n)*cos((j + 1)*M_PI / n), r*cos(i*M_PI / n)*cos((j + 1)*M_PI / n), r*sin((j + 1)*M_PI / n));
+			glEnd();
+		}
+}
+
+}
 // ========================================================================
 
 void drawMyHouse(GLuint texSet[])
@@ -349,19 +416,20 @@ void drawMyHouse(GLuint texSet[])
 
 	// Your main drawing code goes here
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texSet[40]);
+	glBindTexture(GL_TEXTURE_2D, texSet[43]);
 
 	drawBaseWall();
 	draw1stFloor();
+	draw2ndFloor();
 	draw3rdFloor();
 
+	glBindTexture(GL_TEXTURE_2D, texSet[19]);
+	drawMailCtr(1);
+	
 	glBindTexture(GL_TEXTURE_2D, texSet[16]);
+	drawRoof(2.2, 1.5);
 
-	draw2ndFloor();
-
-
-	glBindTexture(GL_TEXTURE_2D, texSet[16]);
-
+	glBindTexture(GL_TEXTURE_2D, texSet[11]);
 	draw1stPillars();
 	draw2ndPillars();
 
@@ -372,6 +440,8 @@ void drawMyHouse(GLuint texSet[])
 	glDisable(GL_TEXTURE_2D);
 	// =========================================
 }
+
+
 
 // ********** You do not need to edit any code beyond this point **********
 
