@@ -32,8 +32,8 @@ public class Main {
 			
 			int middle = x + (y - x)/2;
 			
-			for(int i=x; i<=y; i++)
-				distance[x][y] += Math.abs(value[i] - value[middle]);
+			for(int k=x; k<=y; k++)
+				distance[x][y] += Math.abs(value[k] - value[test]);
 		}
 		
 		return distance[x][y];

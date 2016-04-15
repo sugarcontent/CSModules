@@ -21,6 +21,7 @@ public class Main {
 		for(int i=0; i<numVillages; i++)
 			value[i] = sc.nextInt();
 		
+		//initialise();
 		System.out.println(findMin(numVillages-1, numPosts-1));
 		sc.close();
 		
@@ -30,10 +31,10 @@ public class Main {
 		
 		if(distance[x][y] == 0) {
 			
-			int middle = x + (y - x)/2;
+			int test = x + (y - x)/2;
 			
-			for(int i=x; i<=y; i++)
-				distance[x][y] += Math.abs(value[i] - value[middle]);
+			for(int k=x; k<=y; k++)
+				distance[x][y] += Math.abs(value[k] - value[test]);
 		}
 		
 		return distance[x][y];
