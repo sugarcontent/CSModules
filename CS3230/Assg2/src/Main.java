@@ -54,13 +54,10 @@ public class Main {
 		if(bestValue[end][post] != 0)
 			return bestValue[end][post];
 		
-		int min = Integer.MAX_VALUE, temp;
+		int min = Integer.MAX_VALUE;
 		
 		for(int i=end-1; i >= post - 1; i--) {
-			temp = findMin(i, post - 1) + distance[i+1][end];
-			
-			if(temp<min)
-				min = temp;	
+			min = Math.min(findMin(i, post - 1) + distance[i+1][end], min);
 		}
 		
 		bestValue[end][post] = min;

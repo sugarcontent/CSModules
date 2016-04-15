@@ -41,6 +41,7 @@ public class Main {
 					else 
 						distance[i][j] += value[postPlacement] - value[k];
 			}
+		
 		for(int l = 0; l < numVillages; l++)
 			bestValue[l][0] = distance[0][l];
 	}
@@ -56,10 +57,7 @@ public class Main {
 		int min = Integer.MAX_VALUE, temp;
 		
 		for(int i=end-1; i >= post - 1; i--) {
-			temp = findMin(i, post - 1) + distance[i+1][end];
-			
-			if(temp<min)
-				min = temp;	
+			min = Math.min(findMin(i, post - 1) + distance[i+1][end], min);
 		}
 		
 		bestValue[end][post] = min;

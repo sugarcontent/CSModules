@@ -19,13 +19,13 @@ public class Main {
 			value[i] = sc.nextInt();
 		
 		initialise();
-		System.out.println(count(numVillages-1, numPosts-1));
+		System.out.println(findMin(numVillages-1, numPosts-1));
 		sc.close();
 		
 	}
 	
 	public static void initialise() {
-		int center;
+		int postPlacement;
 		
 		distance = new int[numVillages][numVillages];
 		bestValue = new int[numVillages][numPosts];
@@ -33,19 +33,20 @@ public class Main {
 		for(int i = 0; i < numVillages; i++)
 			for(int j = i + 1; j < numVillages; j++)
 			{
-				center = i + (j - i) / 2;
+				postPlacement = i + (j - i) / 2;
 
 				for(int k = i; k <= j; k++)
-					if(k >= center)
-						distance[i][j] += value[k] - value[center];
+					if(k >= postPlacement)
+						distance[i][j] += value[k] - value[postPlacement];
 					else 
-						distance[i][j] += value[center] - value[k];
+						distance[i][j] += value[postPlacement] - value[k];
 			}
+		
 		for(int l = 0; l < numVillages; l++)
 			bestValue[l][0] = distance[0][l];
 	}
 	
-	public static int count(int end, int post) {
+	public static int findMin(int end, int post) {
 		
 		if(post == 0)
 			return distance[0][end];
@@ -56,7 +57,7 @@ public class Main {
 		int min = Integer.MAX_VALUE, temp;
 		
 		for(int i=end-1; i >= post - 1; i--) {
-			temp = count(i, post - 1) + distance[i+1][end];
+			temp = findMin(i, post - 1) + distance[i+1][end];
 			
 			if(temp<min)
 				min = temp;	
