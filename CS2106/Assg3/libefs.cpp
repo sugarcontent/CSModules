@@ -13,6 +13,11 @@ int _oftCount=0;
 // other functions
 void initFS(const char *fsPartitionName, const char *fsPassword)
 {
+	mountFS(fsPartitionName, fsPassword);
+	_fs = getFSInfo();
+	_oft->inodeBuffer = makeInodeBuffer();
+	_oft->buffer = makeDataBuffer();
+
 }
 
 // Opens a file in the partition. Depending on mode, a new file may be created
@@ -22,7 +27,24 @@ void initFS(const char *fsPartitionName, const char *fsPassword)
 
 int openFile(const char *filename, unsigned char mode)
 {
-	return -1;
+	_oft->openMode = mode;
+	_oft->filePtr = findFile(filename);
+	FILE *fp;
+
+	if(_oft->filePtr == FS_FILE_NOT_FOUND)
+	{
+		if(mode == 1)
+			fp = fopen(filename, "a+");
+	}
+	else
+	{
+		fp = fopen(filename, "r+");
+	}
+	
+	if(fp == NULL)
+		return -1;
+
+	return 0;	
 }
 
 // Write data to the file. File must be opened in MODE_NORMAL or MODE_CREATE modes. Does nothing
