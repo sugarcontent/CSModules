@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Main {
 	
-	public static int numVillages, numPosts;
+	public static int numVillages, numOffices;
 	public static int[] value;
 	public static int[][] distance, bestValue;
 	
@@ -11,17 +11,17 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		
 		numVillages = sc.nextInt();
-		numPosts = sc.nextInt();
+		numOffices = sc.nextInt();
 		
 		distance = new int[numVillages][numVillages];
-		bestValue = new int[numVillages][numPosts];
+		bestValue = new int[numVillages][numOffices];
 		
 		value = new int[numVillages];
 		
 		for(int i=0; i<numVillages; i++)
-			value[i] = sc.nextInt();
+			value[i] = sc.nextInt();	
 		
-		System.out.println(findMin(numVillages-1, numPosts-1));
+		System.out.println(findMin(numVillages-1, numOffices-1));
 		sc.close();
 		
 	}
@@ -39,23 +39,23 @@ public class Main {
 		return distance[x][y];
 	}
 	
-	public static int findMin(int end, int post) {
+	public static int findMin(int end, int office) {
 		
-		if(post == 0) {
+		if(office == 0) {
 			findDist(0, end);
 			return distance[0][end];
 		}
 		
-		if(bestValue[end][post] != 0)
-			return bestValue[end][post];
+		if(bestValue[end][office] != 0)
+			return bestValue[end][office];
 		
 		int min = Integer.MAX_VALUE;
 		
-		for(int i=end-1; i >= post - 1; i--) {
-			min = Math.min(findMin(i, post - 1) + findDist(i+1, end), min);
+		for(int i=end-1; i >= office - 1; i--) {
+			min = Math.min(findMin(i, office - 1) + findDist(i+1, end), min);
 		}
 		
-		bestValue[end][post] = min;
+		bestValue[end][office] = min;
 		
 		return min;
 	}
