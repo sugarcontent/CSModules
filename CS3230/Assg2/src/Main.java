@@ -55,8 +55,6 @@ public class Main {
 			min = Math.min(findMin(i, office - 1) + findDist(i+1, end), min);
 		}
 		
-		bestValue[end][office] = min;
-		
-		return min;
+		return bestValue[end][office] = min;
 	}
 }
