@@ -29,6 +29,7 @@ int openFile(const char *filename, unsigned char mode)
 {
 	_oft->openMode = mode;
 	_oft->filePtr = findFile(filename);
+	_oft->fileName = filename;
 	FILE *fp;
 
 	if(_oft->filePtr == FS_FILE_NOT_FOUND)
@@ -51,6 +52,38 @@ int openFile(const char *filename, unsigned char mode)
 // if file is opened in MODE_READ_ONLY mode.
 void writeFile(int fp, void *buffer, unsigned int dataSize, unsigned int dataCount)
 {
+	if(_oft->openMode == 0 || _oft->openMode == 1) 
+	{
+		FILE *fp = fdopen(_oft->filePtr, "r+");
+		unsigned long len = fread(buffer, sizeof(dataSize), dataCount, fp);
+		unsigned int dirNdx = makeDirectoryEntry(_oft->fileName, 0x0, len);
+		
+		unsigned long freeBlock; 
+		
+		int i;
+		int numBlocks = ceil((double)(dataSize * dataCount) / _oft->blockSize); 
+		
+		for(i=0; i<numBlocks; i++) 
+		{
+			freeBlock = findFreeBlock();
+			markBlockBusy(freeBlock);
+		
+			loadInode(_oft->inodeBuffer, dirNdx);
+			_oft->inodeBuffer[0]=freeBlock;
+
+			writeBlock((char *)buffer, freeBlock);
+			saveInode(_oft->inodeBuffer, dirNdx);
+		
+			updateFreeList();
+			updateDirectory();
+			
+		buffer = (char *)buffer +  _oft->blockSize;
+		}
+
+			unmountFS();
+			free(buffer);
+			free(_oft->inodeBuffer);
+	} 
 }
 
 // Flush the file data to the disk. Writes all data buffers, updates directory,
