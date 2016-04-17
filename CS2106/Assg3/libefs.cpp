@@ -95,6 +95,32 @@ void flushFile(int fp)
 // Read data from the file.
 void readFile(int fp, void *buffer, unsigned int dataSize, unsigned int dataCount)
 {
+	FILE *filept = fdopen(_oft->filePtr, "r+");
+      	unsigned long len = fread(buffer, sizeof(dataSize), dataCount, filept);
+	unsigned int dirNdx = makeDirectoryEntry(_oft->fileName, 0x0, len);
+	unsigned int numBlocks = ceil((double)(dataSize*dataCount) / _oft->blockSize);
+  
+      	unsigned long freeBlock;
+
+	for(int i=0; i<numBlocks; i++){
+
+          freeBlock = findFreeBlock();
+         markBlockBusy(freeBlock);
+         loadInode(_oft->inodeBuffer, dirNdx);
+          _oft->inodeBuffer[0] = freeBlock;
+         readBlock((char *)buffer, freeBlock);
+         saveInode(_oft->inodeBuffer, dirNdx);
+ 
+         updateFreeList();
+         updateDirectory();
+ 
+         buffer = (char *)buffer + _oft->blockSize;
+    }
+  
+     unmountFS();
+     free(_oft->inodeBuffer);
+     free(buffer);
+
 }
 
 // Delete the file. Read-only flag (bit 2 of the attr field) in directory listing must not be set. 
