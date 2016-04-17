@@ -10,6 +10,8 @@ public class Main {
 		
 		Scanner sc = new Scanner(System.in);
 		
+		while(sc.hasNextInt()) {
+		
 		numVillages = sc.nextInt();
 		numOffices = sc.nextInt();
 		
@@ -22,7 +24,7 @@ public class Main {
 			value[i] = sc.nextInt();	
 		
 		System.out.println(findMin(numVillages-1, numOffices-1));
-		
+		}
 		sc.close();
 		
 	}
