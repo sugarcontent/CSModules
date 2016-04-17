@@ -95,8 +95,8 @@ void flushFile(int fp)
 // Read data from the file.
 void readFile(int fp, void *buffer, unsigned int dataSize, unsigned int dataCount)
 {
-	FILE *fp = fdopen(_oft->filePtr, "r+");
-      	unsigned long len = fread(buffer, sizeof(dataSize), dataCount, fp);
+	FILE *filept = fdopen(_oft->filePtr, "r+");
+      	unsigned long len = fread(buffer, sizeof(dataSize), dataCount, filept);
 	unsigned int dirNdx = makeDirectoryEntry(_oft->fileName, 0x0, len);
 	unsigned int numBlocks = ceil((double)(dataSize*dataCount) / _oft->blockSize);
   
