@@ -95,31 +95,40 @@ void flushFile(int fp)
 // Read data from the file.
 void readFile(int fp, void *buffer, unsigned int dataSize, unsigned int dataCount)
 {
-	FILE *filept = fdopen(_oft->filePtr, "r+");
-      	unsigned long len = fread(buffer, sizeof(dataSize), dataCount, filept);
-	unsigned int dirNdx = makeDirectoryEntry(_oft->fileName, 0x0, len);
-	unsigned int numBlocks = ceil((double)(dataSize*dataCount) / _oft->blockSize);
-  
-      	unsigned long freeBlock;
+	FILE *filept = fdopen(_oft->filePtr, "r");
+
+    	unsigned int fileNdx = findFile(_td->filename);
+ 
+	if(fileNdx == FS_FILE_NOT_FOUND)
+	{
+        printf("Cannot find encrypted file %s\n", _td->filename);
+        exit(-1);
+	}
+
+	unsigned int len = getFileLength(_td->filename);
+
+     	unsigned int numBlocks = ceil((double)(dataSize*dataCount) / _oft->blockSize);
+
+     	loadInode(_oft->inodeBuffer, fileNdx);
 
 	for(int i=0; i<numBlocks; i++){
 
-          freeBlock = findFreeBlock();
-         markBlockBusy(freeBlock);
-         loadInode(_oft->inodeBuffer, dirNdx);
-          _oft->inodeBuffer[0] = freeBlock;
-         readBlock((char *)buffer, freeBlock);
-         saveInode(_oft->inodeBuffer, dirNdx);
+	unsigned long blockNum = _oft->inodeBuffer[0];
+        readBlock((char *)_oft->buffer, blockNum);
  
-         updateFreeList();
-         updateDirectory();
+        _oft->buffer = (char *)_oft->buffer + _oft->blockSize;
+	}
+
+     	unmountFS();
  
-         buffer = (char *)buffer + _oft->blockSize;
-    }
-  
-     unmountFS();
-     free(_oft->inodeBuffer);
-     free(buffer);
+    	FILE *pp = fopen(_td->filename, "w");
+
+    	fwrite(_oft->buffer, sizeof(char), len, pp);
+     	fclose(pp);
+ 
+   	free(_oft->inodeBuffer);
+   	free(_oft->buffer);
+
 
 }
 
